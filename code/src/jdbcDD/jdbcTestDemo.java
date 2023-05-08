@@ -1,3 +1,5 @@
+package jdbcDD;
+
 import org.junit.Test;
 
 import java.sql.*;
