@@ -1,7 +1,10 @@
 import org.junit.Test;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: qjc
@@ -134,14 +137,14 @@ public class jdbcTestDemo {
         Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
 
         // 3. 编写sql,动态值用?代替
-        String sql = "select username,age from User where username=? and age=?;";
+        String sql = "select * from User where username like ?;";
 
         // 4. preparedStatement
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
         // 5. 占位符赋值
-        preparedStatement.setString(1,"dageda");
-        preparedStatement.setInt(2,18);
+        preparedStatement.setString(1,"%");
+//        preparedStatement.setInt(2,18);
 
         // 6. 发送SQL
 
@@ -155,11 +158,23 @@ public class jdbcTestDemo {
 
         ResultSetMetaData metaData = resultSet.getMetaData();
         int columnCount = metaData.getColumnCount();
+        List<Map> list = new ArrayList<>();
         while (resultSet.next()) {
             HashMap map = new HashMap();
 
+            for (int i = 0;i<columnCount;i++){
+                Object object = resultSet.getObject(i+1);
+
+                // getColumnLabel 获取别名 ，getColumnName 获取列名
+                String columnLabel = metaData.getColumnLabel(i+1);
+                map.put(columnLabel, object);
+            }
+            list.add(map);
+
 
         }
+
+        System.out.println(list);
 
 
 
