@@ -22,6 +22,7 @@ public class JdbcUtils {
 
 
     static {
+
         // 初始化
         Properties properties = new Properties();
         InputStream inputStream = JdbcUtils.class.getClassLoader().getResourceAsStream("mysqlCon.properties");
