@@ -35,7 +35,7 @@ public class Base {
 
         // 获取连接
         DruidPooledConnection connection = dataSource.getConnection();
-
+        System.out.println("连接成功");
 
         // 数据库crud
 
