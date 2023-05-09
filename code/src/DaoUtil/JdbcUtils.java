@@ -18,6 +18,9 @@ import java.util.Properties;
 public class JdbcUtils {
     private static DataSource dataSource = null;
 
+    private static ThreadLocal<Connection> tl = new ThreadLocal<Connection>();
+
+
     static {
         // 初始化
         Properties properties = new Properties();
@@ -38,10 +41,26 @@ public class JdbcUtils {
     }
 
     public static Connection getConnection() throws SQLException {
+
+        Connection connection = tl.get();
+
+//        null
+        if (connection == null) {
+            connection = dataSource.getConnection();
+            tl.set(connection);
+        }
+
         return dataSource.getConnection();
     }
 
-    public static void freeConnection(Connection connection) throws SQLException {
-        connection.close();
+    public static void freeConnection() throws SQLException {
+
+        Connection connection = tl.get();
+        if (connection != null){
+            tl.remove();
+            connection.setAutoCommit(true);
+            connection.close();
+        }
+
     }
 }

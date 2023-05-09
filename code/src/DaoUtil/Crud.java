@@ -27,7 +27,7 @@ public class Crud {
 
         preparedStatement.close();
 
-        JdbcUtils.freeConnection(con);
+        JdbcUtils.freeConnection();
 
 
 
